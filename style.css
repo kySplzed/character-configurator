@@ -1,0 +1,612 @@
+* { margin: 0; padding: 0; box-sizing: border-box; }
+:root {
+    --bg-color: #F2F2F7; --border-main-color: #C6C6C8; --surface-color: #E5E7EB; --text-primary: #1F2937;
+    --text-secondary: #6B7280; --accent-color: #007AFF; --border-color: #D1D5DB;;
+    --font-family: 'Inter', sans-serif; --border-radius: 24px; --padding-md: 24px;
+    --controls-group-bg: rgba(245, 245, 245, 0.50); --controls-primary-bg: #2C2C2E;
+    --controls-group-icon-color: rgba(60, 60, 67, 0.60); --controls-primary-icon-color: #FFFFFF;
+    --input-card-bg: rgba(255, 255, 255, 0.5);
+
+    --button-dwnld-color: #2C2C2E; --button-dwnld-text-color: #FFF;
+
+    --segment-pick-selected-bg: #7676801E;
+    /* --- НОВЫЕ ПЕРЕМЕННЫЕ ДЛЯ ПЕРЕКЛЮЧАТЕЛЯ ПОЛА --- */
+    --gender-man-color: #0A84FF; /* Синий цвет для текста "Man" */
+    --gender-women-color: #FF2D55; /* Красный цвет для текста "Women" */
+
+    /* Цвета для фона ПРИ НАЖАТИИ (с прозрачностью 15%) */
+    --gender-man-active-bg: rgba(10, 132, 255, 0.15);
+    --gender-women-active-bg: rgba(255, 45, 85, 0.15);
+
+    --divider-bg: linear-gradient(0deg, rgba(20, 20, 20, 0.15) 0%, rgba(20, 20, 20, 0.15) 100%), rgba(255, 255, 255, 0.70);
+}
+.dark-theme {
+    --bg-color: #111111; --border-main-color: #0A0A0B; --surface-color: #1D1D1D; --text-primary: #FFFFFF;
+    --text-secondary: #A0A0A0; --border-color: rgba(60, 60, 67, 0.36);;
+    --controls-group-bg: #2C2C2E; --controls-primary-bg: #F2F2F7;
+    --controls-group-icon-color: #FFFFFF; --controls-primary-icon-color: #000000;
+    --input-card-bg: #3C3C435C;
+    --segment-picker-background: #7676801E; --segment-pick-text-color_man: #0A84FF; --segment-pick-text-color_woman: #FF2D55;
+    --segment-pick-man-bg: #0A84FF26; --segment-pick-woman-bg: rgba(255, 45, 85, 0.15); --segment-pick-selected-bg: rgba(0, 0, 0, 0.5);
+
+    --button-dwnld-color: #F2F2F7; --button-dwnld-text-color: #000000;
+
+    --divider-bg: linear-gradient(0deg, rgba(20, 20, 20, 0.15) 0%, rgba(20, 20, 20, 0.15) 100%), rgba(0, 0, 0, 0.70);;
+}
+body { font-family: var(--font-family); background-color: var(--bg-color); color: var(--text-primary); transition: background-color 0.3s, color 0.3s; }
+
+/* ------------------------- */
+/* --- СЕТКА КОНФИГУРАТОРА --- */
+/* ------------------------- */
+.configurator { display: flex; flex-direction: column; width: 100%; min-height: 100vh; background-color: var(--bg-color); }
+.configurator__settings { flex-basis: 55%; margin: 0; border-radius: 1px; padding: var(--padding-md); }
+
+/* ------------------------------------- */
+/* --- СТИЛИ БЛОКА ПРЕВЬЮ (MOBILE-FIRST) --- */
+/* ------------------------------------- */
+.configurator__preview { background-color: var(--surface-color); border-radius: var(--border-radius); margin: 20px 20px 10px 20px; height: 50vh; display: flex; align-items: center; justify-content: center; position: relative; transition: background-color 0.3s, border-color 0.3s; }
+.preview__avatar { width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; }
+.preview__avatar img { max-width: 100%; max-height: 100%; object-fit: contain; }
+
+/* --- ИСПРАВЛЕННЫЕ СТИЛИ ДЛЯ МОБИЛЬНЫХ КНОПОК --- */
+.preview__controls {
+    position: absolute; top: 50%; right: 16px;
+    transform: translateY(-50%);
+    display: flex; flex-direction: column;
+}
+/* Общие стили для ВСЕХ кнопок в мобильном виде */
+.controls__button {
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px;
+    background-color: var(--surface-color); /* 1. Возвращаем фон */
+    border: 1px solid var(--border-color); /* 2. Возвращаем рамку */
+    border-radius: 12px; /* 3. Задаем скругление */
+    color: var(--text-secondary); /* 4. Задаем цвет иконки */
+    cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.controls__button:hover { color: var(--text-primary); }
+.controls__button--active,
+.preview__controls .controls__button--primary { /* Делаем активную кнопку и кнопку "скачать" одинаковыми на мобилке */
+    background-color: var(--button-dwnld-color);
+    border-color: var(--button-dwnld-color);
+    color: var(--button-dwnld-text-color);
+}
+
+.theme-switcher {
+    position: absolute; top: 16px; left: 16px;
+    /* Используем те же стили, что и у обычных кнопок для единообразия */
+    display: flex; align-items: center; justify-content: center;
+    width: 48px; height: 48px; border-radius: 50%; /* Делаем ее круглой */
+    background-color: var(--surface-color); border: 1px solid var(--border-color);
+    color: var(--text-secondary); cursor: pointer;
+    transition: background-color 0.2s, color 0.2s, border-color 0.2s;
+}
+.theme-switcher:hover { color: var(--text-primary); }
+
+
+
+/* ============================================= */
+/* --- ОБЩИЕ КОМПОНЕНТЫ: КНОПКИ (btn)      --- */
+/* ============================================= */
+
+/* 1. Базовый стиль для ВСЕХ кнопок (.btn) - ИЗМЕНЕН */
+.btn {
+    /* Сброс стилей и базовые настройки */
+    border: none;
+    background-color: transparent;
+    width: 100%; /* ИЗМЕНЕНИЕ: Задаем полную ширину по умолчанию */
+
+    /* Текст */
+    font-family: inherit;
+    font-size: 17px; /* Увеличил для соответствия padding */
+    font-weight: 600;
+    text-decoration: none;
+
+    /* Размеры и форма - ИЗМЕНЕНЫ согласно твоему макету */
+    padding: 14px 20px;
+    border-radius: 14px;
+
+    /* Интерактивность */
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+    display: block; /* Убедимся, что кнопка ведет себя как блочный элемент */
+}
+
+/* 2. Модификатор для основной кнопки (.btn--primary) */
+.btn--primary {
+    /* Цвет #007AFF у нас уже используется через переменную --accent-color, так что тут всё отлично! */
+    background-color: var(--accent-color);
+    color: #ffffff;
+}
+
+.btn--primary:hover {
+    background-color: #0056b3;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 122, 255, 0.2);
+}
+
+.btn--primary:active {
+    transform: translateY(0);
+    background-color: #004a99;
+    box-shadow: none;
+}
+
+
+/* 3. Модификатор для второстепенной кнопки (.btn--secondary) */
+.btn--secondary {
+    color: var(--text-secondary);
+    box-shadow: inset 0 0 0 1px var(--border-color);
+}
+
+.btn--secondary:hover {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    box-shadow: inset 0 0 0 1px var(--accent-color);
+}
+
+.btn--secondary:active {
+    background-color: #0056b3;
+    box-shadow: inset 0 0 0 1px #0056b3;
+    transform: translateY(1px);
+}
+
+/* 4. Контейнер для кнопок в конце формы - ИЗМЕНЕН */
+.settings-form__actions {
+    display: flex;
+    flex-direction: column; /* ИЗМЕНЕНИЕ: Ставим кнопки друг под другом */
+    gap: 12px;
+    padding-top: 16px;
+    margin-top: auto;
+    /* justify-content: flex-end; -- это свойство нам больше не нужно */
+}
+
+
+/* ---------------------------------- */
+/* --- АДАПТИВНОСТЬ И ДЕСКТОПНЫЕ СТИЛИ --- */
+/* ---------------------------------- */
+@media (min-width: 768px) {
+    body { display: flex; justify-content: center; align-items: center; min-height: 100vh; }
+    .configurator { flex-direction: row; width: 90%; max-width: 1200px; height: 85vh; max-height: 750px; background-color: var(--surface-color); border-radius: var(--border-radius); border: 1px solid var(--border-color); overflow: hidden; }
+    .configurator__preview {
+        flex-basis: 45%;
+        height: auto;
+        margin: 0;
+        border-radius: 0;
+        padding: var(--padding-md);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        position: relative;
+    }
+    .configurator__preview::after {
+        content: ''; /* Обязательное свойство для псевдо-элементов */
+        position: absolute; /* Позиционируем относительно .configurator__preview */
+
+        /* Задаем отступы */
+        top: 24px;
+        bottom: 24px;
+
+        /* Положение и размер */
+        right: 0; /* Прижимаем к правому краю */
+        width: 2px; /* Толщина линии */
+
+        /* Внешний вид */
+        background-color: var(--border-main-color);
+    }
+    .configurator__settings { flex-basis: 55%; margin: 0; border-radius: 1px; padding: var(--padding-md); }
+
+    /* 1. Главный контейнер-«пилюля». ИСПРАВЛЕНА КЛЮЧЕВАЯ ОШИБКА! */
+    .preview__controls {
+        position: static;
+        transform: none;
+        margin: 20px auto 0;
+
+        display: flex;
+        /*
+            ВОТ ИСПРАВЛЕНИЕ: Явно указываем направление "в ряд".
+            Это отменит `flex-direction: column` из мобильных стилей.
+        */
+        flex-direction: row;
+
+        width: max-content;
+
+        border-radius:  24px 14px 14px 24px;
+        overflow: hidden;
+        filter: drop-shadow(0px 4px 16px rgba(0, 0, 0, 0.08));
+    }
+
+    /* 2. Левая группа кнопок (поворот). */
+    .controls__group {
+        gap: 16px;
+        padding: 0 16px;
+        display: flex;
+        align-items: center;
+        background-color: var(--controls-group-bg);
+        transition: background-color 0.3s;
+    }
+
+    /* 3. Разделитель. */
+    .controls__divider {
+        width: 1px;
+        height: 24px;
+        background-color: var(--border-color);
+        transition: background-color 0.3s;
+    }
+
+    /* 4. Общие стили для ВСЕХ кнопок внутри. */
+    .controls__button {
+        background: transparent;
+        border: none;
+        box-shadow: none;
+        border-radius: 0;
+        padding: 0;
+
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 48px;
+        width: 52px;
+
+        cursor: pointer;
+        transition: background-color 0.2s;
+    }
+
+    /* 5. Цвет иконок для левой группы. */
+    .controls__group .controls__button {
+        color: var(--controls-group-icon-color);
+    }
+    .controls__group .controls__button:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    /* 6. Стиль для правой, основной кнопки (скачать). */
+    .controls__button--primary {
+        background-color: var(--controls-primary-bg);
+        color: var(--controls-primary-icon-color);
+        transition: background-color 0.3s, color 0.3s;
+    }
+
+    .controls__button--primary:hover {
+        filter: brightness(0.95);
+    }
+
+    .theme-switcher { position: absolute; top: 24px; left: 24px; right: auto; border-radius: 12px; }
+}
+
+/* Медиа-запрос для планшетов */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .configurator { flex-direction: column; height: auto; max-height: none; }
+    .configurator__preview { border-right: none; border-radius: 1px; border-bottom: 2px solid var(--border-main-color); }
+}
+
+
+/* ---------------------------------- */
+/* --- СТИЛИ ФОРМЫ НАСТРОЕК (ВЕРСИЯ 3 - ПРАВИЛЬНАЯ) --- */
+/* ---------------------------------- */
+
+.settings-form { display: flex; flex-direction: column; gap: 16px; }
+.settings-form__title { font-size: 28px; font-weight: 700; color: var(--text-primary); padding-bottom: 8px; }
+.settings-form__note { font-size: 13px; color: var(--text-secondary); line-height: 1.4; max-width: 500px; padding: 0 16px;}
+.form-section { display: flex; flex-direction: column; gap: 8px; }
+.form-section__title { font-size: 15px; font-weight: 600; color: var(--text-secondary); letter-spacing: 0.5px; padding: 0 16px;}
+
+/* 1. Контейнер-карточка */
+.input-card {
+    background-color: var(--input-card-bg);
+    border-radius: 10px;
+    padding: 0 16px; /* Горизонтальные отступы для всего блока */
+}
+
+/* 2. Разделитель */
+.input-card__divider {
+    height: 1px;
+    background-color: var(--border-color);
+    /* Отступы убраны, т.к. они теперь на .input-card__group */
+}
+
+/* 3. Группа (Вес, Рост) - ключевой элемент */
+.input-card__group {
+    display: flex;
+    flex-direction: column; /* Элементы внутри группы идут друг под другом */
+    gap: 12px; /* Маленький отступ между лейблом и полем ввода */
+    padding: 12px 0; /* Вертикальные отступы */
+}
+
+/* 4. Название (label) */
+.form-group__label {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-primary);
+}
+
+/* 5. Обертка для поля ввода и кнопки */
+.input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+/* 6. Поле ввода */
+.input-wrapper__field {
+    flex-grow: 1; /* Занимает все доступное место */
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text-primary);
+    position: relative;
+    z-index: 1;
+}
+.input-wrapper__field::placeholder {
+    color: var(--text-secondary);
+}
+
+/* 7. Кнопка "Очистить" */
+.input-wrapper__clear-btn {
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none; border: none; padding: 0; cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    opacity: 0; pointer-events: none; transition: opacity 0.2s;
+    z-index: 2;
+}
+.input-wrapper.has-value .input-wrapper__clear-btn { opacity: 1; pointer-events: auto; }
+
+/* Убираем стрелки у числовых полей */
+input::-webkit-outer-spin-button, input::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+input[type=number] { -moz-appearance: textfield; }
+
+
+/* ---------------------------------- */
+/* --- СТИЛИ ПЕРЕКЛЮЧАТЕЛЯ (Segmented Control) - ВЕРСИЯ 2 --- */
+/* ---------------------------------- */
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+/* 1. Контейнер */
+.segmented-control {
+    display: flex;
+    background-color: var(--segment-pick-selected-bg);
+    border-radius: 10px;
+    padding: 3px;
+    border: 1px solid var(--border-color);
+}
+
+/* 2. Скрываем радиокнопку */
+.segmented-control__input {
+    position: absolute;
+    width: 0;
+    height: 0;
+    opacity: 0;
+    pointer-events: none;
+}
+
+/* 3. Общие стили для "кнопок" (label) */
+.segmented-control__label {
+    flex: 1;
+    padding: 8px 16px;
+    text-align: center;
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--text-secondary); /* Цвет неактивного текста */
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+/* 4. Стили для ВЫБРАННОГО состояния (когда input:checked) */
+/* --- Man (ВЫБРАН) --- */
+#gender-man:checked + .segmented-control__label[for="gender-man"] {
+    background-color: var(--surface-color);
+    color: var(--gender-man-color); /* Используем синюю переменную */
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+/* --- Women (ВЫБРАН) --- */
+#gender-women:checked + .segmented-control__label[for="gender-women"] {
+    background-color: var(--surface-color);
+    color: var(--gender-women-color); /* Используем красную переменную */
+    font-weight: 600;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+
+/* 5. Стили для состояния НАЖАТИЯ (:active) - для интерактивного эффекта */
+/* --- Man (НАЖАТИЕ) --- */
+.segmented-control__label[for="gender-man"]:active {
+    background-color: var(--gender-man-active-bg); /* Полупрозрачный синий фон */
+}
+/* --- Women (НАЖАТИЕ) --- */
+.segmented-control__label[for="gender-women"]:active {
+    background-color: var(--gender-women-active-bg); /* Полупрозрачный красный фон */
+}
+
+/* ---------------------------------- */
+/* --- СТИЛИ ПАЛИТРЫ ЦВЕТОВ --- */
+/* ---------------------------------- */
+
+/* 1. Контейнер палитры */
+.color-palette {
+    display: flex;
+    justify-content: space-around; /* Равномерно распределяем цвета */
+    align-items: center;
+    background-color: var(--segment-pick-selected-bg);
+    border-radius: 10px;
+    padding: 12px 12px;
+    border: 1px solid var(--border-color);
+}
+
+/* 2. Скрываем настоящую радиокнопку */
+.color-palette__input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+/* 3. Цветной кружок (наш label) */
+.color-palette__swatch {
+    display: block;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%; /* Делаем его круглым */
+    background-color: var(--swatch-color); /* Используем нашу локальную переменную! */
+    cursor: pointer;
+
+    /* Готовим место для двойной обводки */
+    border: 2px solid transparent;
+    box-shadow: 0 0 0 2px transparent;
+
+    transition: all 0.2s ease-in-out;
+}
+
+/* 4. Разделитель */
+.color-palette__divider {
+    width: 1px;
+    height: 24px;
+    background-color: var(--border-color);
+}
+
+/* 5. Магия: стили для ВЫБРАННОГО кружка */
+.color-palette__input:checked + .color-palette__swatch {
+    /* Внутренняя обводка (белая) */
+    border-color: var(--surface-color);
+
+    /* Внешняя обводка (цвета самого кружка) */
+    box-shadow: 0 0 0 2px var(--swatch-color);
+}
+
+
+
+.form-divider {
+    height: 6px;
+
+    /*
+        Я скопировал твой градиент. Это довольно сложный способ задать
+        полупрозрачный цвет, скорее всего, это артефакт экспорта из Figma.
+        Но он будет работать.
+    */
+    background: var(--divider-bg);
+
+    border: none; /* Убираем стандартную рамку у <hr> */
+
+    /* Добавим вертикальные отступы для воздуха */
+    margin: 16px 0;
+}
+
+
+/* ---------------------------------- */
+/* --- СТИЛИ КАСТОМНОГО СЕЛЕКТА --- */
+/* ---------------------------------- */
+
+.custom-select {
+    position: relative; /* Важно для позиционирования выпадающего списка */
+    display: flex;
+    align-items: center;
+}
+
+.custom-select__trigger {
+    flex-grow: 1;
+    background: transparent;
+    border: none;
+    outline: none;
+    padding: 0;
+    font-size: 16px;
+    font-family: inherit;
+    color: var(--text-secondary);
+    text-align: left; /* В отличие от инпута, текст здесь слева */
+    cursor: pointer;
+}
+
+.custom-select__trigger span {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Стили для выбранного значения */
+.custom-select.is-selected .custom-select__trigger {
+    color: var(--text-primary);
+}
+
+/* Выпадающий список */
+.custom-select__dropdown {
+    position: absolute;
+    top: calc(100% + 8px); /* Появляется под полем с отступом в 8px */
+    left: 0;
+    right: 0;
+    background-color: var(--surface-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+    z-index: 10; /* Должен быть поверх всего */
+
+    /* Скрываем по умолчанию */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(-10px);
+    transition: all 0.2s ease-in-out;
+}
+
+/* Показываем список, когда у родителя есть класс is-open */
+.custom-select.is-open .custom-select__dropdown {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+}
+
+.custom-select__options {
+    background-color: var(--bg-color);
+    list-style: none;
+    margin: 0;
+    padding: 8px;
+    max-height: 200px; /* Ограничиваем высоту на случай длинных списков */
+    overflow-y: auto;
+}
+
+.custom-select__option {
+    padding: 10px 12px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 16px;
+    color: var(--text-primary);
+}
+
+.custom-select__option:hover {
+    background-color: var(--bg-color);
+}
+
+/* Показываем крестик, когда что-то выбрано */
+.custom-select.has-value .input-wrapper__clear-btn {
+    opacity: 1;
+    pointer-events: auto;
+    color: var(--text-secondary); /* Цвет иконки-крестика */
+}
+
+        /* --- Убираем стандартные стрелки у числовых полей ввода --- */
+
+.padding-16{
+    margin: 0 16px;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+    -moz-appearance: textfield;
+}

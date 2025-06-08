@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Конфигуратор персонажа</title>
+    <link rel="icon" type="image/x-icon" href="/favicon.png">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="dark-theme">
+
+<main class="configurator">
+    <!-- --- ИЗМЕНЕНИЕ: Убрали класс "preview" --- -->
+    <section class="configurator__preview">
+
+        <div class="preview__avatar">
+            <img src="/assets/png/3dmodel_preview.png" alt="3D аватар персонажа">
+        </div>
+
+        <!--
+            Кнопки управления теперь позиционируются абсолютно
+            относительно родителя .configurator__preview
+        -->
+        <div class="preview__controls">
+            <div class="controls__group">
+                <button type="button" class="controls__button" title="Повернуть влево">
+                    <div class="16padding">
+                        <svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M0.53117 10.3594C0.53117 7.73438 1.85929 5.375 3.86711 3.91406C4.21086 3.64844 4.64054 3.73438 4.83586 4.05469C5.03117 4.38281 4.92961 4.75 4.60929 4.99219C2.94523 6.17969 1.86711 8.14062 1.85929 10.3594C1.85148 14.0469 4.81242 17 8.49992 17C12.1874 17 15.1327 14.0469 15.1327 10.3594C15.1327 7.19531 12.9609 4.57031 10.0077 3.89844V5.00781C10.0077 5.57031 9.62492 5.71875 9.19523 5.40625L6.71086 3.65625C6.34367 3.39844 6.35148 3.02344 6.71086 2.77344L9.20304 1.03125C9.62492 0.726562 10.0077 0.875 10.0077 1.42969V2.53906C13.664 3.25781 16.4687 6.51562 16.4687 10.3594C16.4687 14.7188 12.8593 18.3281 8.49992 18.3281C4.14836 18.3281 0.53117 14.7188 0.53117 10.3594Z" fill="currentColor" />
+                    </svg>
+                    </div>
+                </button>
+                <div class="controls__divider"></div>
+                <button type="button" class="controls__button" title="Повернуть вправо">
+                    <div class="padding-16">
+                        <svg width="17" height="19" viewBox="0 0 17 19" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M16.4688 10.3594C16.4688 7.73438 15.1407 5.375 13.1329 3.91406C12.7891 3.64844 12.3595 3.73438 12.1641 4.05469C11.9688 4.38281 12.0704 4.75 12.3907 4.99219C14.0548 6.17969 15.1329 8.14062 15.1407 10.3594C15.1485 14.0469 12.1876 17 8.50008 17C4.81258 17 1.86727 14.0469 1.86727 10.3594C1.86727 7.19531 4.03914 4.57031 6.99227 3.89844V5.00781C6.99227 5.57031 7.37508 5.71875 7.80477 5.40625L10.2891 3.65625C10.6563 3.39844 10.6485 3.02344 10.2891 2.77344L7.79696 1.03125C7.37508 0.726562 6.99227 0.875 6.99227 1.42969V2.53906C3.33602 3.25781 0.53133 6.51562 0.53133 10.3594C0.53133 14.7188 4.14071 18.3281 8.50008 18.3281C12.8516 18.3281 16.4688 14.7188 16.4688 10.3594Z" fill="currentColor" />
+                    </svg>
+                    </div>
+                </button>
+            </div>
+            <button type="button" class="controls__button controls__button--primary" title="Сохранить">
+                <svg width="15" height="18" viewBox="0 0 15 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.60718 12.4609C7.45093 12.4609 7.31812 12.4141 7.15405 12.2578L4.51343 9.70312C4.39624 9.58594 4.33374 9.46094 4.33374 9.29688C4.33374 8.97656 4.56812 8.75 4.89624 8.75C5.04468 8.75 5.21655 8.8125 5.32593 8.9375L6.50562 10.1953L7.03687 10.75L6.98999 9.57812V1.34375C6.98999 1.01562 7.27124 0.734375 7.60718 0.734375C7.94312 0.734375 8.23218 1.01562 8.23218 1.34375V9.57812L8.1853 10.75L8.70874 10.1953L9.89624 8.9375C10.0056 8.8125 10.1619 8.75 10.3181 8.75C10.6384 8.75 10.8884 8.97656 10.8884 9.29688C10.8884 9.46094 10.8181 9.58594 10.7009 9.70312L8.0603 12.2578C7.90405 12.4141 7.77124 12.4609 7.60718 12.4609ZM3.13062 17.6016C1.4978 17.6016 0.67749 16.7891 0.67749 15.1797V7.38281C0.67749 5.77344 1.4978 4.96094 3.13062 4.96094H5.3103V6.21875H3.14624C2.36499 6.21875 1.9353 6.64062 1.9353 7.45312V15.1094C1.9353 15.9219 2.36499 16.3438 3.14624 16.3438H12.0681C12.8416 16.3438 13.2869 15.9219 13.2869 15.1094V7.45312C13.2869 6.64062 12.8416 6.21875 12.0681 6.21875H9.91187V4.96094H12.0916C13.7244 4.96094 14.5447 5.77344 14.5447 7.38281V15.1797C14.5447 16.7891 13.7244 17.6016 12.0916 17.6016H3.13062Z" fill="currentColor" />
+                </svg>
+            </button>
+        </div>
+
+        <!-- --- НОВОЕ: Кнопка смены темы --- -->
+        <button type="button" class="theme-switcher" title="Сменить тему">
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"></path></svg>
+        </button>
+
+    </section>
+
+    <form class="configurator__settings settings-form">
+
+        <h1 class="settings-form__title">Введите свои настройки</h1>
+
+        <!-- НОВАЯ СЕКЦИЯ: физические данные -->
+        <div class="form-section">
+
+            <h2 class="form-section__title">Физические данные</h2>
+
+            <!-- Контейнер-карточка -->
+            <div class="input-card">
+
+                <!-- Группа 1: Вес -->
+                <div class="input-card__group">
+                    <label for="weight-input" class="form-group__label">Вес</label>
+                    <div class="input-wrapper">
+                        <input
+                                type="number"
+                                id="weight-input"
+                                class="input-wrapper__field"
+                                placeholder="Введите ваш вес в кг..."
+                                min="1" step="1" inputmode="numeric" pattern="\d*">
+                        <button type="button" class="input-wrapper__clear-btn" title="Очистить">
+                            <!-- svg крестика -->
+                            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 17.5023C13.1944 17.5023 17 13.6967 17 9.00232C17 4.30798 13.1944 0.502319 8.5 0.502319C3.80557 0.502319 0 4.30798 0 9.00232C0 13.6967 3.80557 17.5023 8.5 17.5023ZM12.2657 5.23669C12.5781 5.54895 12.5781 6.05554 12.2657 6.36804L9.63138 9.00232L12.2657 11.6366C12.5781 11.9491 12.5781 12.4557 12.2657 12.7679C11.9533 13.0804 11.4467 13.0804 11.1343 12.7679L8.5 10.1337L5.86569 12.7679C5.55328 13.0804 5.04675 13.0804 4.73431 12.7679C4.42191 12.4557 4.42191 11.9491 4.73431 11.6366L7.36862 9.00232L4.73431 6.36804C4.42191 6.05554 4.42191 5.54895 4.73431 5.23669C5.04672 4.92419 5.55325 4.92419 5.86569 5.23669L8.5 7.87097L11.1343 5.23669C11.4467 4.92419 11.9533 4.92419 12.2657 5.23669Z" fill="#8E8E93"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Разделитель -->
+                <div class="input-card__divider"></div>
+
+                <!-- Группа 2: Рост -->
+                <div class="input-card__group">
+                    <label for="height-input" class="form-group__label">Рост</label>
+                    <div class="input-wrapper">
+                        <input
+                                type="number"
+                                id="height-input"
+                                class="input-wrapper__field"
+                                placeholder="Введите ваш рост в см..."
+                                min="1" step="1" inputmode="numeric" pattern="\d*">
+                        <button type="button" class="input-wrapper__clear-btn" title="Очистить">
+                            <!-- svg крестика -->
+                            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 17.5023C13.1944 17.5023 17 13.6967 17 9.00232C17 4.30798 13.1944 0.502319 8.5 0.502319C3.80557 0.502319 0 4.30798 0 9.00232C0 13.6967 3.80557 17.5023 8.5 17.5023ZM12.2657 5.23669C12.5781 5.54895 12.5781 6.05554 12.2657 6.36804L9.63138 9.00232L12.2657 11.6366C12.5781 11.9491 12.5781 12.4557 12.2657 12.7679C11.9533 13.0804 11.4467 13.0804 11.1343 12.7679L8.5 10.1337L5.86569 12.7679C5.55328 13.0804 5.04675 13.0804 4.73431 12.7679C4.42191 12.4557 4.42191 11.9491 4.73431 11.6366L7.36862 9.00232L4.73431 6.36804C4.42191 6.05554 4.42191 5.54895 4.73431 5.23669C5.04672 4.92419 5.55325 4.92419 5.86569 5.23669L8.5 7.87097L11.1343 5.23669C11.4467 4.92419 11.9533 4.92419 12.2657 5.23669Z" fill="#8E8E93"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+
+            <p class="settings-form__note">Данные нужны только для 3D-модели и не сохраняются.</p>
+        </div>
+
+        <!-- НОВАЯ СЕКЦИЯ: ПОЛ -->
+        <div class="form-group">
+            <h2 class="form-section__title">Пол</h2>
+
+            <!-- Наш кастомный переключатель -->
+            <div class="segmented-control">
+                <!-- Опция 1: Man -->
+                <input
+                        type="radio"
+                        id="gender-man"
+                        name="gender"
+                        class="segmented-control__input"
+                        value="man"
+                        checked> <!-- `checked` делает эту опцию выбранной по умолчанию -->
+                <label for="gender-man" class="segmented-control__label">Man</label>
+
+                <!-- Опция 2: Women -->
+                <input
+                        type="radio"
+                        id="gender-women"
+                        name="gender"
+                        class="segmented-control__input"
+                        value="women">
+                <label for="gender-women" class="segmented-control__label">Women</label>
+            </div>
+        </div>
+
+        <!-- НОВАЯ СЕКЦИЯ: цвет кожи -->
+        <div class="form-group">
+            <h2 class="form-section__title">Цвет кожи</h2>
+
+            <!-- Палитра -->
+            <div class="color-palette">
+                <!-- Цвет 1 -->
+                <input type="radio" id="skin-color-1" name="skin-color" class="color-palette__input" value="#F5DDC8" checked>
+                <label for="skin-color-1" class="color-palette__swatch" style="--swatch-color: #F5DDC8;"></label>
+
+                <div class="color-palette__divider"></div>
+
+                <!-- Цвет 2 -->
+                <input type="radio" id="skin-color-2" name="skin-color" class="color-palette__input" value="#EBC0A0">
+                <label for="skin-color-2" class="color-palette__swatch" style="--swatch-color: #EBC0A0;"></label>
+
+                <div class="color-palette__divider"></div>
+
+                <!-- Цвет 3 -->
+                <input type="radio" id="skin-color-3" name="skin-color" class="color-palette__input" value="#D19F77">
+                <label for="skin-color-3" class="color-palette__swatch" style="--swatch-color: #D19F77;"></label>
+
+                <div class="color-palette__divider"></div>
+
+                <!-- Цвет 4 -->
+                <input type="radio" id="skin-color-4" name="skin-color" class="color-palette__input" value="#A8724D">
+                <label for="skin-color-4" class="color-palette__swatch" style="--swatch-color: #A8724D;"></label>
+
+                <div class="color-palette__divider"></div>
+
+                <!-- Цвет 5 -->
+                <input type="radio" id="skin-color-5" name="skin-color" class="color-palette__input" value="#6B452B">
+                <label for="skin-color-5" class="color-palette__swatch" style="--swatch-color: #6B452B;"></label>
+            </div>
+        </div>
+        <!-- ЛИНИЯ разделитель -->
+        <hr class="form-divider">
+
+        <!-- НОВАЯ СЕКЦИЯ: ВЫБЕРИТЕ ТОВАР (ИСПРАВЛЕННАЯ ВЕРСИЯ) -->
+        <div class="form-section">
+            <h2 class="form-section__title">Выберите товар</h2>
+
+            <div class="input-card">
+                <!-- Кастомный селект 1: Футболка -->
+                <div class="input-card__group">
+                    <label class="form-group__label">Футболка</label>
+
+                    <div class="custom-select" data-placeholder="Выберите товар из списка ...">
+                        <button type="button" class="custom-select__trigger">
+                            <span>Выберите товар из списка ...</span>
+                        </button>
+                        <!-- Кнопка очистки с иконкой внутри -->
+                        <button type="button" class="input-wrapper__clear-btn" title="Очистить">
+                            <svg width="17" height="18" viewBox="0 0 17 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.5 17.5023C13.1944 17.5023 17 13.6967 17 9.00232C17 4.30798 13.1944 0.502319 8.5 0.502319C3.80557 0.502319 0 4.30798 0 9.00232C0 13.6967 3.80557 17.5023 8.5 17.5023ZM12.2657 5.23669C12.5781 5.54895 12.5781 6.05554 12.2657 6.36804L9.63138 9.00232L12.2657 11.6366C12.5781 11.9491 12.5781 12.4557 12.2657 12.7679C11.9533 13.0804 11.4467 13.0804 11.1343 12.7679L8.5 10.1337L5.86569 12.7679C5.55328 13.0804 5.04675 13.0804 4.73431 12.7679C4.42191 12.4557 4.42191 11.9491 4.73431 11.6366L7.36862 9.00232L4.73431 6.36804C4.42191 6.05554 4.42191 5.54895 4.73431 5.23669C5.04672 4.92419 5.55325 4.92419 5.86569 5.23669L8.5 7.87097L11.1343 5.23669C11.4467 4.92419 11.9533 4.92419 12.2657 5.23669Z" fill="#8E8E93"/>
+                            </svg>
+                        </button>
+                        <div class="custom-select__dropdown">
+                            <ul class="custom-select__options">
+                                <li class="custom-select__option" data-value="tshirt-1">Черное худи</li>
+                                <li class="custom-select__option" data-value="tshirt-2">Белое худи</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="input-card__divider"></div>
+
+                <!-- Кастомный селект 2: Шорты -->
+                <div class="input-card__group">
+                    <label class="form-group__label">Шорты</label>
+                    <div class="custom-select" data-placeholder="Выберите товар из списка ...">
+                        <button type="button" class="custom-select__trigger">
+                            <span>Выберите товар из списка ...</span>
+                        </button>
+                        <!-- Кнопка очистки с иконкой внутри -->
+                        <button type="button" class="input-wrapper__clear-btn" title="Очистить">
+                            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" clip-rule="evenodd" d="M10 20C15.5228 20 20 15.5228 20 10C20 4.47715 15.5228 0 10 0C4.47715 0 0 4.47715 0 10C0 15.5228 4.47715 20 10 20ZM12.9497 7.05025C13.3403 6.65973 13.3403 6.02656 12.9497 5.63604C12.5592 5.24551 11.9261 5.24551 11.5355 5.63604L10 7.17157L8.46447 5.63604C8.07394 5.24551 7.44078 5.24551 7.05025 5.63604C6.65973 6.02656 6.65973 6.65973 7.05025 7.05025L8.58579 8.58579L7.05025 10.1213C6.65973 10.5118 6.65973 11.145 7.05025 11.5355C7.44078 11.9261 8.07394 11.9261 8.46447 11.5355L10 10.0000L11.5355 11.5355C11.9261 11.9261 12.5592 11.9261 12.9497 11.5355C13.3403 11.145 13.3403 10.5118 12.9497 10.1213L11.4142 8.58579L12.9497 7.05025Z" fill="currentColor"/></svg>
+                        </button>
+                        <div class="custom-select__dropdown">
+                            <ul class="custom-select__options">
+                                <li class="custom-select__option" data-value="shorts-1">Светлые шорты</li>
+                                <li class="custom-select__option" data-value="shorts-2">Темные шорты</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="settings-form__actions">
+
+
+            <button type="submit" class="btn btn--primary">
+                Примерить
+            </button>
+            <p class="settings-form__note">Внешний вид товара на 3D-модели может незначительно отличаться от реального изделия из-за особенностей визуализации.</p>
+        </div>
+        <!-- Здесь будут остальные секции: Пол, Цвет кожи и т.д. -->
+
+    </form>
+</main>
+
+
+<script>
+    // ... твой скрипт для смены темы ...
+    const themeSwitcher = document.querySelector('.theme-switcher');
+    const body = document.body;
+    themeSwitcher.addEventListener('click', () => {
+        body.classList.toggle('dark-theme');
+    });
+
+    // --- НОВЫЙ СКРИПТ ДЛЯ КНОПОК ОЧИСТКИ ---
+    const inputWrappers = document.querySelectorAll('.input-wrapper');
+
+    inputWrappers.forEach(wrapper => {
+        const input = wrapper.querySelector('.input-wrapper__field');
+        const clearBtn = wrapper.querySelector('.input-wrapper__clear-btn');
+
+        if (!input || !clearBtn) return;
+
+        // Показываем/скрываем кнопку при вводе текста
+        input.addEventListener('input', () => {
+            if (input.value.length > 0) {
+                wrapper.classList.add('has-value');
+            } else {
+                wrapper.classList.remove('has-value');
+            }
+        });
+
+        // Очищаем поле при клике на кнопку
+        clearBtn.addEventListener('click', () => {
+            input.value = '';
+            wrapper.classList.remove('has-value');
+            input.focus(); // Возвращаем фокус в поле ввода для удобства
+        });
+    });
+
+    // --- НОВЫЙ СКРИПТ ДЛЯ КАСТОМНЫХ СЕЛЕКТОВ (ВЕРСИЯ 2) ---
+    document.querySelectorAll('.custom-select').forEach(selectWrapper => {
+        const trigger = selectWrapper.querySelector('.custom-select__trigger');
+        const dropdown = selectWrapper.querySelector('.custom-select__dropdown');
+        const options = selectWrapper.querySelectorAll('.custom-select__option');
+        const clearBtn = selectWrapper.querySelector('.input-wrapper__clear-btn');
+        const placeholder = selectWrapper.dataset.placeholder;
+        const triggerText = trigger.querySelector('span');
+
+        // Клик по "кнопке" селекта
+        trigger.addEventListener('click', () => {
+            selectWrapper.classList.toggle('is-open');
+        });
+
+        // Клик по опции в списке
+        options.forEach(option => {
+            option.addEventListener('click', () => {
+                triggerText.textContent = option.textContent;
+                selectWrapper.classList.add('is-selected'); // Меняем цвет текста на основной
+                selectWrapper.classList.add('has-value'); // Показываем крестик
+                selectWrapper.classList.remove('is-open'); // Закрываем список
+            });
+        });
+
+        // Клик по кнопке "очистить"
+        clearBtn.addEventListener('click', (e) => {
+            e.stopPropagation(); // Важно: чтобы клик по крестику не открывал список
+            triggerText.textContent = placeholder;
+            selectWrapper.classList.remove('is-selected'); // Возвращаем цвет плейсхолдера
+            selectWrapper.classList.remove('has-value'); // Скрываем крестик
+        });
+
+        // Клик вне селекта
+        document.addEventListener('click', (e) => {
+            if (!selectWrapper.contains(e.target)) {
+                selectWrapper.classList.remove('is-open');
+            }
+        });
+    });
+</script>
+</body>
+</html>
